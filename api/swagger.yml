@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: ToDo API
+  version: "1.0"
+
+paths:
+  /tasks:
+    get:
+      summary: Get all tasks
+      operationId: tasks.get_all_tasks
+      responses:
+        "200":
+          description: List of tasks
+    post:
+      summary: Add a new task
+      operationId: tasks.add_task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        "201":
+          description: Task created
+
+  /tasks/{person}:
+    get:
+      summary: Get tasks by person
+      operationId: tasks.get_tasks_by_person
+      parameters:
+        - name: person
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tasks of that person
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        assigned_to:
+          type: string
+        completed:
+          type: boolean
