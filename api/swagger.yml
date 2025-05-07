@@ -2,7 +2,6 @@ openapi: 3.0.0
 info:
   title: ToDo API
   version: "1.0"
-
 paths:
   /tasks:
     get:
@@ -10,7 +9,7 @@ paths:
       operationId: tasks.get_all_tasks
       responses:
         "200":
-          description: List of tasks
+          description: A list of tasks
     post:
       summary: Add a new task
       operationId: tasks.add_task
@@ -36,7 +35,7 @@ paths:
             type: string
       responses:
         "200":
-          description: Tasks of that person
+          description: Tasks for that person
 
 components:
   schemas:

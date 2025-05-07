@@ -1,18 +1,26 @@
-from flask import request, jsonify
-from database import tasks
+tasks = [
+    { 'id': 1, 'title': 'Acheter des légumes', 'assigned_to': 'Ashley', 'completed': False },
+    { 'id': 2, 'title': 'Faire du ménage', 'assigned_to': 'Kate', 'completed': True },
+    { 'id': 3, 'title': 'Réparer la porte', 'assigned_to': 'Ashley', 'completed': False }
+]
 
-# GET /tasks
+next_id = 4
+
 def get_all_tasks():
-    return jsonify(tasks)
+    return tasks, 200
 
-# POST /tasks
-def add_task():
-    new_task = request.get_json()
-    new_task['id'] = len(tasks) + 1
-    tasks.append(new_task)
-    return jsonify(new_task), 201
-
-# GET /tasks/{person}
 def get_tasks_by_person(person):
-    filtered_tasks = [t for t in tasks if t['assigned_to'].lower() == person.lower()]
-    return jsonify(filtered_tasks)
+    filtered = [t for t in tasks if t['assigned_to'] == person]
+    if not filtered:
+        return {'error': f'No tasks found for {person}'}, 404
+    return filtered, 200
+
+def add_task(body):
+    global next_id
+    if 'assigned_to' not in body or 'title' not in body:
+        return { 'error': 'Missing fields' }, 400
+    body['id'] = next_id
+    body['completed'] = body.get('completed', False)
+    tasks.append(body)
+    next_id += 1
+    return body, 201
